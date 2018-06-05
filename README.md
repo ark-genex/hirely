@@ -50,3 +50,9 @@ https://codeburst.io/javascript-wtf-is-es6-es8-es-2017-ecmascript-dca859e4821c
 ## git
 
 git config credential.username 'ark-genex'
+
+## Resources
+
+https://github.com/zfynote/ng2-book
+https://github.com/zfynote/ng2-book/blob/master/ng-book2-angular-6-r68.pdf
+https://angular.io/resources
