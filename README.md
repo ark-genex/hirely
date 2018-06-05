@@ -49,4 +49,4 @@ https://codeburst.io/javascript-wtf-is-es6-es8-es-2017-ecmascript-dca859e4821c
 
 ## git
 
-git -c user.name=ark-genex -c user.email=Shri@thearkinnovations.com add .
+git config credential.username 'ark-genex'
