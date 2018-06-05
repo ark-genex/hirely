@@ -2,7 +2,10 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../out-tsc/app",
-    "module": "es2015",
+    "module": "amd",
+    "target": "es2018",
+    "baseUrl": "",
+    "lib": ["es5", "es2015"/*es6*/, "es2016" /*es7*/, "es2017" /*es8*/, "es2018", "dom"],
     "types": []
   },
   "exclude": [

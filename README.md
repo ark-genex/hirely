@@ -1,4 +1,4 @@
-# Hirely
+# Hirely - Hiring made easy !!!
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.7.
 
@@ -25,3 +25,23 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+
+## How do I update each dependency in package.json to the latest version?
+
+npm i -g npm-check-updates
+ncu -u
+npm install
+
+
+## Errors
+ 
+https://stackoverflow.com/questions/47139581/upgraded-to-angular-5-ts6046-and-ts5024-errors
+
+##### ERROR in The Angular Compiler requires TypeScript >=2.7.2 and <2.8.0 but 2.8.4 was found instead.
+npm install -g typescript@2.7.2
+/usr/local/lib/node_modules/node/lib/node_modules/typescript
+
+#### JavaScript — WTF is ES6, ES8, ES 2017, ECMAScript… ?
+
+https://codeburst.io/javascript-wtf-is-es6-es8-es-2017-ecmascript-dca859e4821c

@@ -3,6 +3,10 @@
   "compilerOptions": {
     "outDir": "../out-tsc/spec",
     "module": "commonjs",
+    /*"module": "amd",*/
+    "target": "es2017",
+    "baseUrl": "",
+    "lib": ["es5", "es2015"/*es6*/, "es2016" /*es7*/, "es2017" /*es8*/, "es2018", "dom"],
     "types": [
       "jasmine",
       "node"
