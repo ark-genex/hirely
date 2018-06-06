@@ -1,6 +1,8 @@
 {
   "name": "hirely",
   "version": "0.0.1",
+  "description": "Hirely UI Client - Hiring made easy !!!",
+  "author": "Rakesh Chouhan",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
