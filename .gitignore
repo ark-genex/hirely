@@ -40,3 +40,14 @@ testem.log
 Thumbs.db
 /client/node_modules/
 /server/node_modules/
+dist/
+server/.tscache/
+server/src/**/*.js
+server/src/**/*.js.map
+client/.tscache/
+client/src/**/*.js
+client/src/**/*.js.map
+client/e2e/**/*.js
+client/e2e/**/*.js.map
+*-lock.json
+*-lock.json

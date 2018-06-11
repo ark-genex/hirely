@@ -1,7 +1,12 @@
 import { createServer, Server } from 'http';
 import * as express from 'express';
 import * as socketIo from 'socket.io';
-
+import * as bodyParser from 'body-parser';
+import * as cookieParser from 'cookie-parser';
+import * as path from 'path';
+// import * as logger from 'morgan';
+// import errorHandler = require('errorhandler');
+// import methodOverride = require('method-override');
 // import { Message } from './model';
 
 export class HirelyServer {
@@ -10,6 +15,11 @@ export class HirelyServer {
   private server: Server;
   private io: SocketIO.Server;
   private port: string | number;
+
+  public static bootstrap(): express.Application {
+    const hirelyServer = new HirelyServer();
+    return hirelyServer.getApp();
+  }
 
   constructor() {
     this.createApp();
@@ -58,4 +68,5 @@ export class HirelyServer {
   }
 }
 
-new HirelyServer().getApp();
+// new HirelyServer().getApp();
+HirelyServer.bootstrap();

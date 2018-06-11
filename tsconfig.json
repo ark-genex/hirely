@@ -2,12 +2,16 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "sourceMap": true,
+    "sourceMap": true,/*This generates .map and .js file for every ts file that gets compiled*/
     "declaration": false,
+    "module": "commonjs",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es5",
+    "inlineSourceMap": true,
+    "target": "es6",
+    "noImplicitAny": false,
+    "suppressImplicitAnyIndexErrors": true,
     "typeRoots": [
       "node_modules/@types"
     ],
