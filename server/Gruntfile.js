@@ -151,7 +151,7 @@ module.exports = function (grunt) {
         files: [
           {expand: true, flatten: true, src : ['src/hirely-server.js'], dest: '<%= distdir %>'}
         ]
-      },
+      }/*,
       parentDist: {
         options: {
           patterns: [
@@ -164,7 +164,7 @@ module.exports = function (grunt) {
         files: [
           {dest: '../<%= distdir %>', src : ['src/hirely-server.js'], expand: true, flatten: true}
         ]
-      }
+      }*/
     },
 
     copy: {
@@ -174,7 +174,7 @@ module.exports = function (grunt) {
             expand: true,
             cwd: "./src",
             src: ["**"],
-            dest: '../<%= distdir %>'
+            dest: '<%= distdir %>'
           }
         ]
       },
