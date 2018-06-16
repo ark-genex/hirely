@@ -1,0 +1,18 @@
+{
+  "appenders": {
+    "multi": {
+      "type": "multiFile",
+      "base": "../dist/logs/",
+      "property": "categoryName",
+      "extension": ".log"
+    }
+  },
+  "categories": {
+    "default": {
+      "appenders": [
+        "multi"
+      ],
+      "level": "debug"
+    }
+  }
+}

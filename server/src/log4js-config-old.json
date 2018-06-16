@@ -1,0 +1,99 @@
+{
+  "appenders": {
+    "clientLog": {
+      "type": "file",
+      "filename": "../dist/logs/client.log",
+      "pattern": "[%d{yyyy-MM-dd hh:mm:ss,SSS}] [%p] [%c] - %m",
+      "alwaysIncludePattern": true,
+      "maxLogSize": 104857600,
+      "backups": 5,
+      "category": "client",
+      "compress": true,
+      "encoding": "utf-8",
+      "mode": "0o0640",
+      "flags": "w+"
+    },
+    "accessLog": {
+      "type": "file",
+      "filename": "../dist/logs/access.log",
+
+      "pattern": "[%d{yyyy-MM-dd hh:mm:ss,SSS}] [%p] [%c] - %m",
+      "alwaysIncludePattern": true,
+      "maxLogSize": 104857600,
+      "backups": 5,
+      "category": "access",
+      "compress": true,
+      "encoding": "utf-8",
+      "mode": "0o0640",
+      "flags": "w+"
+    },
+    "appLog": {
+      "type": "file",
+      "filename": "../dist/logs/app.log",
+      "pattern": "[%d{yyyy-MM-dd hh:mm:ss,SSS}] [%p] [%c] - %m",
+      "alwaysIncludePattern": true,
+      "maxLogSize": 104857600,
+      "backups": 5,
+      "category": [
+        "server",
+        "hirely-utils",
+        "security",
+        "oauth-utils",
+        "rbac",
+        "dynatrace"
+      ],
+      "compress": true,
+      "encoding": "utf-8",
+      "mode": "0o0640",
+      "flags": "w+"
+    },
+    "errorsLog": {
+      "type": "file",
+      "filename": "../dist/logs/errors.log",
+      "pattern": "[%d{yyyy-MM-dd hh:mm:ss,SSS}] [%p] [%c] - %m",
+      "alwaysIncludePattern": true,
+      "maxLogSize": 104857600,
+      "backups": 5,
+      "category": "errors",
+      "compress": true,
+      "encoding": "utf-8",
+      "mode": "0o0640",
+      "flags": "w+"
+    }
+  },
+  "categories": {
+    "clientLog": {
+      "appenders": [
+        "clientLog"
+      ],
+      "level": "info"
+    },
+    "accessLog": {
+      "appenders": [
+        "accessLog"
+      ],
+      "level": "info"
+    },
+    "appLog": {
+      "appenders": [
+        "appLog"
+      ],
+      "level": "info"
+    },
+    "errorsLog": {
+      "appenders": [
+        "errorsLog"
+      ],
+      "level": "info"
+    },
+    "default": {
+      "appenders": [
+        "clientLog",
+        "accessLog",
+        "appLog",
+        "errorsLog"
+      ],
+      "level": "trace"
+    }
+  }
+}

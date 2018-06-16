@@ -12,6 +12,7 @@ import errorHandler = require('errorhandler');
 import {Logger} from 'log4js';
 // import { Message } from './model';
 import { IndexRouter } from "./routes/IndexRouter";
+import { Utils } from "./utils";
 
 export class HirelyServer {
   static readonly PORT: number = 3005;
@@ -51,7 +52,10 @@ export class HirelyServer {
      */
     if (!process.env.NODE_ENV) {
       try {
-        fs.mkdirSync(__dirname + '/logs'); // TODO: This should be configurable for higher environments. Those entries should be in the config file
+        let logsPath = path.join(__dirname, '../dist/logs');
+        if (!fs.existsSync(logsPath)) {
+          fs.mkdirSync(logsPath); // TODO: This should be configurable for higher environments. Those entries should be in the config file
+        }
       } catch (e) {
         if (e.code !== 'EEXIST') {
           console.error("Could not set up log directory, error was: ", e);
@@ -60,9 +64,9 @@ export class HirelyServer {
       }
     }
 
-    log4js.configure(__dirname + '/log4js-config.json'/*, {reloadSecs: 60, cwd: config.server.logPath}*/);
-    this.logger = log4js.getLogger('server');
-    this.clientLogger = log4js.getLogger('client');
+    log4js.configure(path.join(__dirname, '/log4js-config.json'));
+    this.logger = log4js.getLogger('appLog');
+    this.clientLogger = log4js.getLogger('clientLog');
     this.httpLogger = log4js.getLogger('http');
     this.logger.info('Logger has been set up. Now starting NodeJS Server for ADAMS');
   }
@@ -115,7 +119,7 @@ export class HirelyServer {
   *
   * */
   private routes(): void {
-    this.logger.info('initializing routers');
+    // this.logger.info('initializing routers');
     let router: express.Router;
     router = express.Router();
 

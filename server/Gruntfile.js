@@ -26,6 +26,7 @@ module.exports = function (grunt) {
     'ts:build',
     'clean:preBuild',
     'copy:npmrc',
+    'copy:build',
     'clean:postBuild',
     'replace'/*,
     'coverage'*/
