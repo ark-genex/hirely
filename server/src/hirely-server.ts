@@ -13,6 +13,7 @@ import {Logger} from 'log4js';
 // import { Message } from './model';
 import { IndexRouter } from "./routes/IndexRouter";
 import { Utils } from "./utils";
+import { Security } from "./security";
 
 export class HirelyServer {
   static readonly PORT: number = 3005;
@@ -32,11 +33,16 @@ export class HirelyServer {
   constructor() {
     this.createApp();
     this.configureLogs();
-    this.config();
+    this.appConfig();
+    this.appSecurity();
     this.createServer();
     this.sockets();
     this.listen();
     this.routes();
+  }
+
+  private appSecurity(){
+    Security.create(this.app);
   }
 
   private createApp(): void {
@@ -75,7 +81,7 @@ export class HirelyServer {
     this.server = createServer(this.app);
   }
 
-  private config(): void {
+  private appConfig(): void {
     this.port = process.env.PORT || HirelyServer.PORT;
 
 
