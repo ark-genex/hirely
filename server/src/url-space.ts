@@ -1,5 +1,11 @@
 export class UrlSpace {
 
+  /* OAUTH URLS */
+  static readonly AUTH = '/auth';
+  static readonly REAUTH = '/auth/reauth';
+  static readonly CHECK_TOKEN = '/auth/checkToken';
+  static readonly LOGOUT_TOKEN = '/auth/logout';
+
   /* LOCAL URLS */
 
   static readonly LOCAL_USER = '/api/user';

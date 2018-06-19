@@ -14,6 +14,7 @@ import {Logger} from 'log4js';
 import { IndexRouter } from "./routes/IndexRouter";
 import { Utils } from "./utils";
 import { Security } from "./security";
+import { Config } from "./config";
 
 export class HirelyServer {
   static readonly PORT: number = 3005;
@@ -24,6 +25,7 @@ export class HirelyServer {
   private logger: Logger;
   private clientLogger: Logger;
   private httpLogger: Logger;
+  private config: Config;
 
   static bootstrap(): express.Application {
     const hirelyServer = new HirelyServer();
@@ -41,21 +43,12 @@ export class HirelyServer {
     this.routes();
   }
 
-  private appSecurity(){
-    Security.create(this.app);
-  }
-
   private createApp(): void {
     this.app = express();
   }
 
-  private configureLogs():void {
-
-
-    /**
-     * make a log directory, just in case it isn't there.
-     * this is only needed for local environments.
-     */
+  private configureLogs(): void {
+    // make a log directory, just in case it isn't there. This is only needed for local environments.
     if (!process.env.NODE_ENV) {
       try {
         let logsPath = path.join(__dirname, '../dist/logs');
@@ -77,13 +70,9 @@ export class HirelyServer {
     this.logger.info('Logger has been set up. Now starting NodeJS Server for ADAMS');
   }
 
-  private createServer(): void {
-    this.server = createServer(this.app);
-  }
-
   private appConfig(): void {
     this.port = process.env.PORT || HirelyServer.PORT;
-
+    this.config = new Config();
 
     //add static paths -
     // this.app.use(express.static(path.join(__dirname, "public")));
@@ -120,20 +109,12 @@ export class HirelyServer {
     this.app.use(errorHandler());
   }
 
-  /*
-  * Initialize Routes
-  *
-  * */
-  private routes(): void {
-    // this.logger.info('initializing routers');
-    let router: express.Router;
-    router = express.Router();
+  private appSecurity(): void {
+    Security.create(this.app);
+  }
 
-    //IndexRoute
-    IndexRouter.create(router);
-
-    //use router middleware
-    this.app.use(router);
+  private createServer(): void {
+    this.server = createServer(this.app, this.config);
   }
 
   /*
@@ -168,6 +149,22 @@ export class HirelyServer {
         console.log('Client disconnected');
       });*/
     });
+  }
+
+  /*
+  * Initialize Routes
+  *
+  * */
+  private routes(): void {
+    // this.logger.info('initializing routers');
+    let router: express.Router;
+    router = express.Router();
+
+    //IndexRoute
+    IndexRouter.create(router);
+
+    //use router middleware
+    this.app.use(router);
   }
 
   /*
