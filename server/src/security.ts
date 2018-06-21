@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as oauth2lib from 'simple-oauth2';
-import { Config } from "./config";
+import {Config} from './config';
 
 export class Security {
 
@@ -57,7 +57,5 @@ export class Security {
     };
 
     return oauth2lib.create(credentials);
-
-
   }
 }

@@ -1,7 +1,7 @@
 import {Router} from 'express';
 import {AbstractBaseRoute} from './BaseRoute';
 import {Config} from './../config';
-import { UrlSpace } from "./../url-space";
+import {UrlSpace} from './../url-space';
 
 /**
  * / route
@@ -53,23 +53,20 @@ export class OAuth2Router extends AbstractBaseRoute {
     oAuth2Router.get(config.oauth.routes.reauth, function (req, res) {
       this.logger.debug('Beginning Reauthorization with OAuth');
 
-      var reauthorizeUri;
-
       this.checkBaseURL(req, config);
 
-      reauthorizeUri = oAuth2.authCode.authorizeURL({redirect_uri: config.oauth.nodeBaseURL + config.oauth.reauthCallbackURL});
+      const reauthorizeUri = oAuth2.authCode.authorizeURL({redirect_uri: config.oauth.nodeBaseURL + config.oauth.reauthCallbackURL});
       this.logger.debug('Reauthorization URL: ' + reauthorizeUri);
 
       res.redirect(reauthorizeUri);
     });
-
   }
 
   /* PRIVATE FUNCTIONS */
 
   private checkBaseURL(req, config): void {
     if (!config.oauth.nodeBaseURL || config.oauth.nodeBaseURL.length === 0) {
-      var protocol = req.headers['x-forwarded-proto'] || req.protocol;
+      const protocol = req.headers['x-forwarded-proto'] || req.protocol;
       config.oauth.nodeBaseURL = protocol + '://' + req.get('host');
     }
   }

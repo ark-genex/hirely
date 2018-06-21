@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from "express";
+import {NextFunction, Request, Response} from 'express';
 import * as log4js from 'log4js';
-import { Logger } from 'log4js';
+import {Logger} from 'log4js';
 
 /**
  * Constructor
@@ -22,7 +22,7 @@ export class AbstractBaseRoute {
    * @constructor
    */
   constructor() {
-    //initialize variables
+    // initialize variables
     // this.title = "Hirely Base Router";
     // this.scripts = [];
     this.logger = log4js.getLogger('appLog');

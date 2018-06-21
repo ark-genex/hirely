@@ -63,6 +63,14 @@ https://codeburst.io/javascript-wtf-is-es6-es8-es-2017-ecmascript-dca859e4821c
 
 git config credential.username 'ark-genex'
 
+## Generate Interfaces from JSON data
+
+Generator: http://json2ts.com/
+Explanation: https://www.youtube.com/watch?v=NHi455y3V2k
+JSON Validator: https://jsonlint.com/
+
+npm install --save @types/express-session
+
 ## Resources
 
 https://github.com/zfynote/ng2-book

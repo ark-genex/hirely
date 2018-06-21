@@ -1,4 +1,4 @@
-import { createServer, Server } from 'http';
+import {createServer, Server} from 'http';
 import * as fs from 'fs';
 import * as express from 'express';
 import * as session from 'express-session';
@@ -12,13 +12,13 @@ import errorHandler = require('errorhandler');
 // import methodOverride = require('method-override');
 import {Logger} from 'log4js';
 // import { Message } from './model';
-import { Security } from './security';
-import { Config } from './config';
+import {Security} from './security';
+import {Config} from './config';
 
-
-import { AppRouter } from './routes/AppRouter';
-import { IndexRouter } from './routes/IndexRouter';
-import { OAuth2Router } from './routes/OAuth2Router';
+import {AppRouter} from './routes/AppRouter';
+import {IndexRouter} from './routes/IndexRouter';
+import {OAuth2Router} from './routes/OAuth2Router';
+import expressValidator = require('express-validator');
 
 export class HirelyServer {
   static readonly PORT: number = 3005;
@@ -102,7 +102,7 @@ export class HirelyServer {
     // mount logger
     // this.app.use(logger("dev"));
 
-    this.app.use(log4js.connectLogger(this.httpLogger, { level: 'auto' }));
+    this.app.use(log4js.connectLogger(this.httpLogger, {level: 'auto'}));
 
     // mount json form parser
     this.app.use(bodyParser.json({limit: '50mb'}));
@@ -118,7 +118,7 @@ export class HirelyServer {
     this.app.use(cookieParser('HIRELY_COOKIES'));
 
     // catch 404 and forward to error handler
-    this.app.use(function(err: any, req: express.Request, res: express.Response, next: express.NextFunction) {
+    this.app.use(function (err: any, req: express.Request, res: express.Response, next: express.NextFunction) {
       err.status = 404;
       next(err);
     });
@@ -129,11 +129,16 @@ export class HirelyServer {
       resave: false,
       secret: 'hirely session secret',
       saveUninitialized: false,
-      unset: 'destroy'
+      unset: 'destroy'/*,
+      store: new MongoStore({
+        url: process.env.MONGODB_URI || process.env.MONGOLAB_URI,
+        autoReconnect: true
+      })*/
     }));
 
     // error handling
     this.app.use(errorHandler());
+    this.app.use(expressValidator());
   }
 
   private appSecurity(): void {
@@ -179,7 +184,6 @@ export class HirelyServer {
   }
 
 
-
   /*
   * Initialize Routes
   *
@@ -208,7 +212,7 @@ export class HirelyServer {
   }
 }
 
-  /* THE DRIVER*/
+/* THE DRIVER*/
 
 // new HirelyServer().getApp();
 HirelyServer.bootstrap();

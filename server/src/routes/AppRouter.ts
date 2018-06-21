@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response, Router } from "express";
-import { AbstractBaseRoute } from './BaseRoute';
-import { Config } from "./../config";
+import {NextFunction, Request, Response, Router} from 'express';
+import {AbstractBaseRoute} from './BaseRoute';
+import {Config} from './../config';
 
 /**
  * / route
@@ -29,17 +29,17 @@ export class AppRouter extends AbstractBaseRoute {
   public static create(appRouter: Router, config: Config) {
 
     if ('/' !== config.server.rootContext) {
-      appRouter.get("/", (req: Request, res: Response, next: NextFunction) => {
+      appRouter.get('/', (req: Request, res: Response, next: NextFunction) => {
         if (req.session) {
-          req.session.destroy();
+          // req.session.destroy();
         }
         res.redirect(config.server.rootContext);
       });
     }
 
-    appRouter.get(config.server.rootContext + '/', function(req, res) {
+    appRouter.get(config.server.rootContext + '/', function (req, res) {
       if (req.session) {
-        req.session.destroy();
+        // req.session.destroy();
       }
       res.redirect(config.server.rootContext + '/auth');
     });
