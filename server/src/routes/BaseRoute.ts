@@ -1,4 +1,6 @@
 import { NextFunction, Request, Response } from "express";
+import * as log4js from 'log4js';
+import { Logger } from 'log4js';
 
 /**
  * Constructor
@@ -7,9 +9,10 @@ import { NextFunction, Request, Response } from "express";
  */
 export class AbstractBaseRoute {
 
-  protected title: string;
+  /*protected title: string;
+  private scripts: string[];*/
 
-  private scripts: string[];
+  public logger: Logger;
 
 
   /**
@@ -20,8 +23,9 @@ export class AbstractBaseRoute {
    */
   constructor() {
     //initialize variables
-    this.title = "Hirely Base Router";
-    this.scripts = [];
+    // this.title = "Hirely Base Router";
+    // this.scripts = [];
+    this.logger = log4js.getLogger('appLog');
   }
 
   /**
@@ -33,7 +37,7 @@ export class AbstractBaseRoute {
    * @return {AbstractBaseRoute} Self for chaining
    */
   public addScript(src: string): AbstractBaseRoute {
-    this.scripts.push(src);
+    // this.scripts.push(src);
     return this;
   }
 
@@ -49,7 +53,7 @@ export class AbstractBaseRoute {
    * @return void
    */
   public render(req: Request, res: Response, view: string, options?: Object) {
-    //add constants
+    /*//add constants
     res.locals.BASE_URL = "/";
 
     //add scripts
@@ -59,12 +63,12 @@ export class AbstractBaseRoute {
     res.locals.title = this.title;
 
     //render view
-    // res.render(view, options);
+    res.render(view, options);
 
 
     // This is for demo purpose only.
     res.send(JSON.stringify("Success"));
 
-    // TODO: Need to do authentication on '/'
+    // TODO: Need to do authentication on '/'*/
   }
 }

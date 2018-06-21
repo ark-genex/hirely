@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, Router } from "express";
-import {AbstractBaseRoute} from './BaseRoute';
+import { AbstractBaseRoute } from './BaseRoute';
 
 
 /**
@@ -17,11 +17,9 @@ export class IndexRouter extends AbstractBaseRoute {
    * @static
    */
   public static create(router: Router) {
-    //log
-    console.log("[IndexRouter::create] Creating index route.");
 
     //add home page route
-    router.get("/", (req: Request, res: Response, next: NextFunction) => {
+    router.get("/index", (req: Request, res: Response, next: NextFunction) => {
       new IndexRouter().index(req, res, next);
     });
   }
@@ -46,7 +44,7 @@ export class IndexRouter extends AbstractBaseRoute {
    * @next {NextFunction} Execute the next method.
    */
   public index(req: Request, res: Response, next: NextFunction) {
-    //set custom title
+   /* //set custom title
     this.title = "Home | Tour of Heros";
 
     //set message
@@ -55,6 +53,6 @@ export class IndexRouter extends AbstractBaseRoute {
     };
 
     //render template
-    this.render(req, res, "index", options);
+    this.render(req, res, "index", options);*/
   }
 }

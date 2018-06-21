@@ -1,6 +1,12 @@
 export class Config {
 
+  private config: any;
+
   constructor() {
+    this.config = this.getConfig();
+  }
+
+  private getConfig() {
     switch(process.env.NODE_ENV){
       case 'production':
         return {
@@ -204,6 +210,7 @@ export class Config {
             clientID: "HIRELY Local",
             clientSecret: "application data is my life",
             url: "https://ssodev.hirely.com/oauth2.0",
+            nodeBaseURL: "http://localhost:3005",
             autoLogoutOnSessionExpired: "true"
           },
           server: {

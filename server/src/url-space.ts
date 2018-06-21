@@ -4,7 +4,11 @@ export class UrlSpace {
   static readonly AUTH = '/auth';
   static readonly REAUTH = '/auth/reauth';
   static readonly CHECK_TOKEN = '/auth/checkToken';
+  static readonly LOGOUT = '/logout';
   static readonly LOGOUT_TOKEN = '/auth/logout';
+  static readonly AUTH_CALLBACK_URL = '/callback';
+  static readonly REAUTH_CALLBACK_URL = '/callback/reauth';
+  static readonly REAUTH_CALLBACK_TOKEN_URL = '/callback/reauth/token';
 
   /* LOCAL URLS */
 

@@ -1,6 +1,7 @@
 import { createServer, Server } from 'http';
 import * as fs from 'fs';
 import * as express from 'express';
+import * as session from 'express-session';
 import * as socketIo from 'socket.io';
 import * as bodyParser from 'body-parser';
 import * as cookieParser from 'cookie-parser';
@@ -11,10 +12,14 @@ import errorHandler = require('errorhandler');
 // import methodOverride = require('method-override');
 import {Logger} from 'log4js';
 // import { Message } from './model';
-import { IndexRouter } from "./routes/IndexRouter";
 import { Utils } from "./utils";
 import { Security } from "./security";
 import { Config } from "./config";
+
+
+import { AppRouter } from "./routes/AppRouter";
+import { IndexRouter } from "./routes/IndexRouter";
+import { OAuth2Router } from "./routes/OAuth2Router";
 
 export class HirelyServer {
   static readonly PORT: number = 3005;
@@ -25,6 +30,7 @@ export class HirelyServer {
   private logger: Logger;
   private clientLogger: Logger;
   private httpLogger: Logger;
+  private oAuth2: any;
   private config: Config;
 
   static bootstrap(): express.Application {
@@ -74,14 +80,14 @@ export class HirelyServer {
     this.port = process.env.PORT || HirelyServer.PORT;
     this.config = new Config();
 
-    //add static paths -
+    // add static paths -
     // this.app.use(express.static(path.join(__dirname, "public")));
 
     //configure pug - Not using pug files for now.
     // this.app.set("views", path.join(__dirname, "views"));
     // this.app.set("view engine", "pug");
 
-    //mount logger
+    // mount logger
     // this.app.use(logger("dev"));
 
     this.app.use(log4js.connectLogger(this.httpLogger, { level: 'auto' }));
@@ -96,7 +102,7 @@ export class HirelyServer {
 
     // this.app.use(bodyParser.json()); -- This may not be needed again
 
-    //mount cookie parser middleware
+    // mount cookie parser middleware
     this.app.use(cookieParser("HIRELY_COOKIES"));
 
     // catch 404 and forward to error handler
@@ -105,16 +111,25 @@ export class HirelyServer {
       next(err);
     });
 
+
+    // setup session
+    this.app.use(session({
+      resave: false,
+      secret: "hirely session secret",
+      saveUninitialized: false,
+      unset: 'destroy'
+    }));
+
     //error handling
     this.app.use(errorHandler());
   }
 
   private appSecurity(): void {
-    Security.create(this.app);
+    this.oAuth2 = Security.getOAuth2(this.app, this.config);
   }
 
   private createServer(): void {
-    this.server = createServer(this.app, this.config);
+    this.server = createServer(this.app);
   }
 
   /*
@@ -151,20 +166,32 @@ export class HirelyServer {
     });
   }
 
+
+
   /*
   * Initialize Routes
   *
   * */
   private routes(): void {
-    // this.logger.info('initializing routers');
-    let router: express.Router;
-    router = express.Router();
+    this.logger.info('initializing routers');
 
-    //IndexRoute
+    const router = HirelyServer.getRouter();
+
+    // Create Routes
+    AppRouter.create(router, this.config);
+    OAuth2Router.create(router, this.config, this.oAuth2);
     IndexRouter.create(router);
 
     //use router middleware
     this.app.use(router);
+  }
+
+  /*
+  *
+  * Get router
+  * */
+  static getRouter(): express.Router {
+    return express.Router();
   }
 
   /*

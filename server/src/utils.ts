@@ -1,7 +1,7 @@
 import * as log4js from 'log4js';
-import {Logger} from 'log4js';
+import { Logger } from 'log4js';
 import * as request from 'request';
-import {Promise} from 'es6-promise';
+import { Promise } from 'es6-promise';
 
 export class Utils {
   private logger: Logger;
