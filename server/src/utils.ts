@@ -6,7 +6,7 @@ import { Promise } from 'es6-promise';
 export class Utils {
   private logger: Logger;
 
-  constructor(){
+  constructor() {
     this.logger = log4js.getLogger('appLog');
   }
 
@@ -17,19 +17,19 @@ export class Utils {
   * */
   public static escapeSpecialChars(jsonString: string) {
 
-    return JSON.stringify(jsonString).replace(/\\n/g, "\\n")
-    .replace(/\\'/g, "\\'")
+    return JSON.stringify(jsonString).replace(/\\n/g, '\\n')
+    .replace(/\\'/g, '\\\'')
     .replace(/\\"/g, '\\"')
-    .replace(/\\&/g, "\\&")
-    .replace(/\\r/g, "\\r")
-    .replace(/\\t/g, "\\t")
-    .replace(/\\b/g, "\\b")
-    .replace(/\\f/g, "\\f");
+    .replace(/\\&/g, '\\&')
+    .replace(/\\r/g, '\\r')
+    .replace(/\\t/g, '\\t')
+    .replace(/\\b/g, '\\b')
+    .replace(/\\f/g, '\\f');
 
   }
 
   public static makeApiCallWithOAuthToken(url: string,
-                                          token:string,
+                                          token: string,
                                           accept: any,
                                           method: any,
                                           body: any,
@@ -48,8 +48,7 @@ export class Utils {
             'content-type': contentType
           }
         };
-      }
-      else {
+      } else {
         options = {
           method: (method) ? method : 'GET',
           url: encodeURI(url),
@@ -67,10 +66,10 @@ export class Utils {
 
       function callback(error, response, body) {
 
-        var responseObject;
+        let responseObject;
         try {
           responseObject = ('object' === typeof body) ? body : JSON.parse(body);
-        } catch(e) {
+        } catch (e) {
           responseObject = {error: {http_status: response ? response.statusCode : 500 , user_message: response ? response.body : 'Unknown Error'}};
         }
 

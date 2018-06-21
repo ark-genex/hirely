@@ -12,14 +12,13 @@ import errorHandler = require('errorhandler');
 // import methodOverride = require('method-override');
 import {Logger} from 'log4js';
 // import { Message } from './model';
-import { Utils } from "./utils";
-import { Security } from "./security";
-import { Config } from "./config";
+import { Security } from './security';
+import { Config } from './config';
 
 
-import { AppRouter } from "./routes/AppRouter";
-import { IndexRouter } from "./routes/IndexRouter";
-import { OAuth2Router } from "./routes/OAuth2Router";
+import { AppRouter } from './routes/AppRouter';
+import { IndexRouter } from './routes/IndexRouter';
+import { OAuth2Router } from './routes/OAuth2Router';
 
 export class HirelyServer {
   static readonly PORT: number = 3005;
@@ -33,9 +32,22 @@ export class HirelyServer {
   private oAuth2: any;
   private config: Config;
 
+  /*
+  *
+  * Start Hirely Node server
+  *
+  **/
   static bootstrap(): express.Application {
     const hirelyServer = new HirelyServer();
     return hirelyServer.getApp();
+  }
+
+  /*
+  *
+  * Get router
+  * */
+  static getRouter(): express.Router {
+    return express.Router();
   }
 
   constructor() {
@@ -57,13 +69,13 @@ export class HirelyServer {
     // make a log directory, just in case it isn't there. This is only needed for local environments.
     if (!process.env.NODE_ENV) {
       try {
-        let logsPath = path.join(__dirname, '../dist/logs');
+        const logsPath = path.join(__dirname, '../dist/logs');
         if (!fs.existsSync(logsPath)) {
           fs.mkdirSync(logsPath); // TODO: This should be configurable for higher environments. Those entries should be in the config file
         }
       } catch (e) {
         if (e.code !== 'EEXIST') {
-          console.error("Could not set up log directory, error was: ", e);
+          console.error('Could not set up log directory, error was: ', e);
           process.exit(1);
         }
       }
@@ -83,7 +95,7 @@ export class HirelyServer {
     // add static paths -
     // this.app.use(express.static(path.join(__dirname, "public")));
 
-    //configure pug - Not using pug files for now.
+    // configure pug - Not using pug files for now.
     // this.app.set("views", path.join(__dirname, "views"));
     // this.app.set("view engine", "pug");
 
@@ -92,18 +104,18 @@ export class HirelyServer {
 
     this.app.use(log4js.connectLogger(this.httpLogger, { level: 'auto' }));
 
-    //mount json form parser
+    // mount json form parser
     this.app.use(bodyParser.json({limit: '50mb'}));
 
-    //mount query string parser
+    // mount query string parser
     this.app.use(bodyParser.urlencoded({
-      extended: true, limit: '50mb', parameterLimit:50000
+      extended: true, limit: '50mb', parameterLimit: 50000
     }));
 
     // this.app.use(bodyParser.json()); -- This may not be needed again
 
     // mount cookie parser middleware
-    this.app.use(cookieParser("HIRELY_COOKIES"));
+    this.app.use(cookieParser('HIRELY_COOKIES'));
 
     // catch 404 and forward to error handler
     this.app.use(function(err: any, req: express.Request, res: express.Response, next: express.NextFunction) {
@@ -115,12 +127,12 @@ export class HirelyServer {
     // setup session
     this.app.use(session({
       resave: false,
-      secret: "hirely session secret",
+      secret: 'hirely session secret',
       saveUninitialized: false,
       unset: 'destroy'
     }));
 
-    //error handling
+    // error handling
     this.app.use(errorHandler());
   }
 
@@ -182,16 +194,8 @@ export class HirelyServer {
     OAuth2Router.create(router, this.config, this.oAuth2);
     IndexRouter.create(router);
 
-    //use router middleware
+    // use router middleware
     this.app.use(router);
-  }
-
-  /*
-  *
-  * Get router
-  * */
-  static getRouter(): express.Router {
-    return express.Router();
   }
 
   /*
