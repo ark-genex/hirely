@@ -90,7 +90,7 @@ export class HirelyServer {
 
   private appConfig(): void {
     this.port = process.env.PORT || HirelyServer.PORT;
-    this.config = new Config();
+    this.config = Config.getInstance();
 
     // add static paths -
     // this.app.use(express.static(path.join(__dirname, "public")));
@@ -133,7 +133,17 @@ export class HirelyServer {
       store: new MongoStore({
         url: process.env.MONGODB_URI || process.env.MONGOLAB_URI,
         autoReconnect: true
-      })*/
+      }),
+      store: new RDBStore({
+            connectOptions: {
+                db: config.db.db,
+                host: config.db.host,
+                port: config.db.port
+            },
+            table: config.db.sessionTable,
+            sessionTimeout: 86400000,
+            flushInterval: 60000
+        })*/
     }));
 
     // error handling
