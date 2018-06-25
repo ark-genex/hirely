@@ -152,7 +152,7 @@ export class HirelyServer {
   }
 
   private appSecurity(): void {
-    this.oAuth2 = Security.getOAuth2(this.app, this.config);
+    this.oAuth2 = new Security().getOAuth2(this.app);
   }
 
   private createServer(): void {

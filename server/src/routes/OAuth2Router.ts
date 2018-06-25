@@ -60,6 +60,51 @@ export class OAuth2Router extends AbstractBaseRoute {
 
       res.redirect(reauthorizeUri);
     });
+
+    // Callback service parsing the authorization token and asking for the access token
+    // '/callback'
+    oAuth2Router.get(config.oauth.authCallbackURL, function (req, res) {
+      this.logger.debug('Entering OAuth callback endpoint');
+
+      const code = req.query.code;
+      this.logger.debug('Retrieved the following OAuth code from the OAuth server ' + code);
+
+      if (code) {
+        this.checkBaseURL(req);
+
+        // Get the access token object (the authorization code is given from the previous step).
+        const tokenConfig = {
+          code: code,
+          redirect_uri: config.oauth.nodeBaseURL + config.oauth.authCallbackURL
+        };
+
+        // Promises
+        // Get the access token object for the client
+        oAuth2.clientCredentials.getToken(tokenConfig)
+          .then((error, result) => {
+            const token = oAuth2.accessToken.create(result);
+
+            // save token
+            this.addTokenToDB(error, result, req, res)
+              .then(function (success: any) {
+                this.logger.debug('Successfully completed OAuth authentication process', success);
+                res.redirect(config.server.rootContext);
+              }, function (err: any) {
+                this.logger.debug('An error occurred during OAuth authentication process', err.message);
+                res.redirect(config.server.rootContext);
+              });
+          })
+          .catch((error) => {
+            this.logger.error('An error occurred while attempting to retrieve authentication');
+            this.logger.error(error);
+            res.status(500).send('An error occurred while attempting to retrieve authentication.');
+            return;
+          });
+      } else {
+        this.logger.error('Call to OAuth Server did not return a code to use to get token');
+        res.status(500).send('An error occurred during the authentication process. Please contact support.');
+      }
+    });
   }
 
   /* PRIVATE FUNCTIONS */
@@ -69,6 +114,50 @@ export class OAuth2Router extends AbstractBaseRoute {
       const protocol = req.headers['x-forwarded-proto'] || req.protocol;
       config.oauth.nodeBaseURL = protocol + '://' + req.get('host');
     }
+  }
+
+  private addTokenToDB(error, result, req, res): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      if (error) {
+        this.logger.error('Access Token Error', error.message);
+        // reject(false);
+      }
+
+      result = this.validateAndFormatTokenFromServer(result);
+
+      if (result) {
+        req.session.token = result.access_token;
+        resolve(true);
+
+        // TODO: Should we store the Token to DB? If So implement that here and send resolve(true) once done.
+      } else {
+        this.logger.error('Unable to determine access token for request');
+        reject(false);
+      }
+    });
+  }
+
+  // validates and formats token received from oauth server (OMS)
+  private validateAndFormatTokenFromServer(result): any {
+    this.logger.debug('Executing validateAndFormatTokenFromServer for result ' + JSON.stringify(result));
+    if (Object.prototype.toString.call(result) === '[object String]') {
+      const objects = result.split('&');
+      const newResult = {};
+      for (let i = 0; i < objects.length; i++) {
+        const tmpObj = objects[i].split('=');
+        newResult[tmpObj[0]] = tmpObj[1];
+      }
+      result = newResult;
+    }
+
+    if (result && result.hasOwnProperty('access_token') && result.access_token.length > 5) {
+      this.logger.debug('Validation complete, token ' + result.access_token + ' is good');
+    } else {
+      this.logger.error('Token did no pass validation ' + result.access_token);
+      result = null;
+    }
+
+    return result;
   }
 
   // #Authorization Code flow
