@@ -31,17 +31,32 @@ export class AppRouter extends AbstractBaseRoute {
     if ('/' !== config.server.rootContext) {
       appRouter.get('/', (req: Request, res: Response, next: NextFunction) => {
         if (req.session) {
-          // req.session.destroy();
+          req.session.destroy(function(err) {
+            if(err) {
+              this.logger.error('error destroying session');
+            }
+            if(req.headers['authorization']) {
+              delete req.headers['authorization'];
+            }
+            res.redirect(config.server.rootContext);
+          });
         }
-        res.redirect(config.server.rootContext);
       });
     }
 
     appRouter.get(config.server.rootContext + '/', function (req, res) {
       if (req.session) {
-        // req.session.destroy();
+
+        req.session.destroy((err) => {
+          if(err) {
+            this.logger.error('error destroying session');
+          }
+          if(req.headers['authorization']) {
+            delete req.headers['authorization'];
+          }
+          res.redirect(config.server.rootContext + '/auth');
+        });
       }
-      res.redirect(config.server.rootContext + '/auth');
     });
   }
 }

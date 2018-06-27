@@ -8,7 +8,7 @@ export interface IOAuth {
   url: string;
   nodeBaseURL: string;
   autoLogoutOnSessionExpired: boolean;
-  [x: string]: any;
+  [key: string]: any;
 }
 
 export interface IServer {
